@@ -67,7 +67,7 @@ const getOrganizationTree = async (req, res) => {
     if (!ceo) {
       return res
         .status(404)
-        .json({ message: "CEO not found in the organization." });
+        .json({ res: false, message: "CEO not found in the organization." });
     }
 
     const buildTree = async (employeeId, processedIds = new Set()) => {

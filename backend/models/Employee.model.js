@@ -12,7 +12,7 @@ const departmentEnum = [
 
 // Predefined designations by department
 const designationsByDepartment = {
-  "Human Resources (HR)": [
+  Human_Resources: [
     "HR Manager",
     "HR Coordinator",
     "Recruitment Specialist",
@@ -40,7 +40,7 @@ const designationsByDepartment = {
     "Sales Representative",
     "Business Development Manager",
   ],
-  "IT/Technology": [
+  "IT-Technology": [
     "IT Manager",
     "Network Administrator",
     "Software Developer",
@@ -54,7 +54,7 @@ const designationsByDepartment = {
     "Logistics Coordinator",
     "Production Supervisor",
   ],
-  "Customer Service": [
+  Customer_Service: [
     "Customer Service Manager",
     "Customer Support Representative",
     "Client Success Manager",

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, selectOpenModalId } from "../../state/Slices/modalSlice";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const Modal = () => {
     const fetchManagers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7500/api/managers/${employee?.department}`
+          `${API_URL}managers/${employee?.department}`
         );
         if (response.data) {
           setManagers(response.data);
@@ -79,7 +80,9 @@ const Modal = () => {
       }
       console.log("response----", response);
     } catch (error) {
+      console.error("-error::", error);
       setResponseMessage("Error adding employee");
+      toast.error(error?.response?.data?.message);
     }
   };
 

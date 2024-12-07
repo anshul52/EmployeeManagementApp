@@ -45,13 +45,22 @@ const AddEmployees = async (req, res) => {
 
     // CEO-specific validation
     if (isCEO) {
+      const existingCEO = await Employee.findOne({ isCEO: true });
+      if (existingCEO) {
+        return res.status(400).json({
+          res: false,
+          message: "A CEO already exists in the organization.",
+        });
+      }
       if (designation !== "CEO") {
-        return res
-          .status(400)
-          .json({ message: 'The designation for a CEO must be "CEO"' });
+        return res.status(400).json({
+          res: false,
+          message: 'The designation for a CEO must be "CEO"',
+        });
       }
       if (department || reportingManager || teams) {
         return res.status(400).json({
+          res: false,
           message:
             "A CEO cannot have a department, reporting manager, or teams.",
         });
@@ -60,6 +69,7 @@ const AddEmployees = async (req, res) => {
       // Validation for non-CEO employees
       if (!department || !designation) {
         return res.status(400).json({
+          res: false,
           message:
             "Department and Designation are required for non-CEO employees.",
         });
@@ -71,14 +81,19 @@ const AddEmployees = async (req, res) => {
       ) {
         return res
           .status(400)
-          .json({ message: "Invalid reporting manager ID." });
+          .json({ res: false, message: "Invalid reporting manager ID." });
       }
       if (reportingManager === "") {
         const ceo = await Employee.findOne({ isCEO: true });
         if (ceo) {
           reportingManager = ceo._id;
         } else {
-          return res.status(400).json({ message: "CEO not found" });
+          return res
+            .status(400)
+            .json({
+              res: false,
+              message: "CEO not found. First make a CEO profile!",
+            });
         }
       }
     }
@@ -103,9 +118,11 @@ const AddEmployees = async (req, res) => {
         $addToSet: { teams: savedEmployee._id },
       });
     }
+    let msgg =
+      isCEO == true ? "CEO added successfully" : "Employee added successfully";
     res.status(201).json({
       res: true,
-      message: "Employee added successfully",
+      message: msgg,
       employee: newEmployee,
     });
   } catch (error) {
